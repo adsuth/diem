@@ -11,6 +11,7 @@ import { BackspaceIcon, FloppyDiskBackIcon, XIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 import {
   addDailyModalIsOpenAtom,
+  currentTabUrlAtom,
   dailiesAtom,
   editDailyIdAtom,
 } from "../lib/atoms"
@@ -23,6 +24,7 @@ export default function AddDailyModal() {
   const [editDailyId] = useAtom(editDailyIdAtom)
   const [, setDailies] = useAtom(dailiesAtom)
   const [, setEditDailyId] = useAtom(editDailyIdAtom)
+  const [currentUrl, setCurrentTabUrl] = useAtom(currentTabUrlAtom)
 
   const title = dto.id !== null ? `Edit ${dto.name}` : "New Daily"
 
@@ -36,9 +38,22 @@ export default function AddDailyModal() {
     setIsOpen(true)
   }, [editDailyId])
 
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const url = tabs[0]?.url
+      console.log(`[debug] :: URL: ${url}`)
+      setCurrentTabUrl(url as string)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (editDailyId !== null) return
+    dto.link = currentUrl
+  }, [currentUrl])
+
   function isValid() {
     return [
-      validateString(dto.name, { max: 30, required: true }),
+      validateString(dto.name, { max: 15, required: true }),
       validateString(dto.link, { required: true }),
       validateEnum(dto.color, { required: true }),
       validateEnum(dto.icon, { required: false }),

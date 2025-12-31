@@ -7,16 +7,8 @@ import {
   isDeleteModeAtom as isEditModeAtom,
   isListModeAtom,
 } from "../lib/atoms"
-import {
-  ArrowSquareOutIcon,
-  CheckIcon,
-  CheckSquareIcon,
-  LinkIcon,
-  PencilIcon,
-  SquareIcon,
-  TrashIcon,
-} from "@phosphor-icons/react"
-import { deleteDaily, saveDailies, setDailyOpened } from "@/content/main"
+import { CheckIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react"
+import { deleteDaily, setDailyOpened } from "@/content/main"
 import { UUIDTypes } from "uuid"
 import { MouseEvent } from "react"
 
@@ -55,38 +47,29 @@ export default function Daily(props: IDailyProps) {
 
   return (
     <>
-      <button
+      <div
         className="daily"
         daily-color={color}
         onClick={openDailyLink}
         daily-complete={`${wasOpenedToday}`}
       >
-        {getIcon(icon, isListMode ? 24 : 64)}
+        {getIcon(icon, isListMode ? 24 : 48)}
         <p>{name}</p>
 
-        <div className="daily-actions">
-          {isEditMode && (
-            <>
-              <button onClick={(ev) => stopPropagationAndRun(ev, editDaily)}>
-                <PencilIcon size={24} weight={"bold"} />
-              </button>
-            </>
-          )}
+        <div className="daily-actions" daily-edit-mode={"" + isEditMode}>
+          <button onClick={(ev) => stopPropagationAndRun(ev, editDaily)}>
+            <PencilIcon size={24} weight={"bold"} />
+          </button>
 
-          {
-            <button
-              onClick={(ev) => stopPropagationAndRun(ev, removeDaily)}
-              hidden={!isEditMode}
-            >
-              <TrashIcon size={24} weight={"bold"} />
-            </button>
-          }
+          <button onClick={(ev) => stopPropagationAndRun(ev, removeDaily)}>
+            <TrashIcon size={24} weight={"bold"} />
+          </button>
         </div>
 
         <div className="daily-check" data-complete={wasOpenedToday}>
           <CheckIcon size={24} weight={"bold"} />
         </div>
-      </button>
+      </div>
     </>
   )
 }

@@ -1,12 +1,14 @@
 export enum DailyColor {
-    None,
+    DarkRed,
     Red,
-    Green,
-    Blue,
-    Pink,
     Orange,
-    Teal,
+    Pink,
     Purple,
+    Blue,
+    Teal,
+    Green,
+    Grey,
+    Black,
 }
 
 export function getColorFrom(color: DailyColor | number) {

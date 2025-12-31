@@ -4,13 +4,9 @@ import { pingChanges, storage } from "./browser";
 import { UUIDTypes } from "uuid";
 import { v7 as uuidv7 } from 'uuid';
 
-function wasOpenedToday(openedUtc: Date) {
-    return TODAY.toDateString() === openedUtc.toDateString()
-}
-
 function dailyDtoFactory(dto: DailyDto): DailyDto {
     dto.openedUtc = new Date(dto.openedUtc as string)
-    dto.wasOpenedToday = wasOpenedToday(dto.openedUtc)
+    dto.wasOpenedToday = TODAY.toDateString() === dto.openedUtc.toDateString()
     return dto
 }
 
@@ -78,7 +74,7 @@ export async function findDaily(id: UUIDTypes | null): Promise<DailyDto> {
 export async function deleteDaily(id: UUIDTypes, setter: (dtos: DailyDto[]) => void) {
     console.log(`[debug] :: Deleting daily with id "${id}"`)
     let dtos = await fetchDailies()
-    setter(dtos.filter(dto => dto.id !== id))
+    saveDailies(dtos.filter(dto => dto.id !== id), setter)
 }
 
 export async function setDailyOpened(id: UUIDTypes, setter: (dtos: DailyDto[]) => void) {

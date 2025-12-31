@@ -10,4 +10,6 @@ export type DailyDto = {
     color: DailyColor,
     openedUtc: Date | null | string,
     wasOpenedToday: boolean,
+    modifiedUtc: Date | string,
+    numberOfTimesOpened: number,
 }
