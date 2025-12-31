@@ -55,7 +55,7 @@ export default function AddDailyModal() {
     return [
       validateString(dto.name, { max: 15, required: true }),
       validateString(dto.link, { required: true }),
-      validateEnum(dto.color, { required: true }),
+      validateEnum(dto.color, { required: false }),
       validateEnum(dto.icon, { required: false }),
     ].every((val) => val)
   }

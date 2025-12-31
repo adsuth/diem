@@ -57,9 +57,9 @@ export default function Dailies() {
   }, [sortMode])
 
   const listToggleIcon = isListMode ? (
-    <GridFourIcon size={32} weight={"bold"} />
-  ) : (
     <ListIcon size={32} weight={"bold"} />
+  ) : (
+    <GridFourIcon size={32} weight={"bold"} />
   )
   const editToggleIcon = isEditMode ? (
     <LockSimpleOpenIcon size={32} weight={"bold"} />
