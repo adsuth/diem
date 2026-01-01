@@ -16,7 +16,7 @@ import {
 } from "../lib/atoms"
 import { DailyDto } from "../types/DailyDto"
 import { DEFAULT_DAILY_DTO } from "@/content/decs"
-import { TABS } from "@/content/browser"
+import { browser, isChromium } from "@/content/browser"
 
 export default function AddDailyModal() {
   const [dto, setDto] = useState<DailyDto>(DEFAULT_DAILY_DTO)
@@ -39,9 +39,30 @@ export default function AddDailyModal() {
   }, [editDailyId])
 
   useEffect(() => {
-    TABS.query({ active: true, currentWindow: true }, (tabs: any) => {
+    // chromium specific (chrome, edge, etc)
+    if (isChromium) {
+      browser.tabs.onActivated.addListener((activeInfo: any) => {
+        browser.tabs.get(activeInfo.tabId, (tab: any) => {
+          setCurrentTabUrl(tab.url || "")
+        })
+      })
+
+      browser.tabs.query({ active: true, currentWindow: true }, (tabs: any) => {
+        const url = tabs[0]?.url
+        setCurrentTabUrl(url as string)
+      })
+      return
+    }
+
+    // firefox specific
+    browser.tabs.onActivated.addListener((activeInfo: any) => {
+      browser.tabs.get(activeInfo.tabId, (tab: any) => {
+        setCurrentTabUrl(tab.url || "")
+      })
+    })
+
+    browser.tabs.query({ active: true, currentWindow: true }, (tabs: any) => {
       const url = tabs[0]?.url
-      console.log(`[debug] :: URL: ${url}`)
       setCurrentTabUrl(url as string)
     })
   }, [])

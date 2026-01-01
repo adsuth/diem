@@ -1,18 +1,17 @@
 import { ChangedObjectStateEnum } from "./decs"
 
-export const BROWSER = chrome
-export const STORAGE = BROWSER.storage.local;
-export const TABS = typeof (globalThis as any).browser !== "undefined" ? 
-    (globalThis as any).browser.tabs : 
-    chrome.tabs
-
+export const isChromium  = typeof (globalThis as any).browser !== "undefined";
+export const browser = typeof (globalThis as any).browser !== "undefined" ? 
+    (globalThis as any).browser : 
+    chrome
+export const storage = browser.storage.local
 
 export function pingChanges(
     changed: ChangedObjectStateEnum,
     message: object,
 ) {
   (async () => {
-    const [tab] = await BROWSER.tabs.query({
+    const [tab] = await browser.tabs.query({
       active: true,
       lastFocusedWindow: true,
     })
@@ -21,7 +20,7 @@ export function pingChanges(
     const content: { [key: string]: object } = {}
     content[key] = message
 
-    await BROWSER.tabs.sendMessage(tab.id as number, content)
+    await browser.tabs.sendMessage(tab.id as number, content)
 
     console.log(`[diem] :: Saving changes`)
   })().catch(() => {})

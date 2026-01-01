@@ -1,6 +1,6 @@
 import { DailyDto } from "@/popup/types/DailyDto";
 import { ChangedObjectStateEnum, DEFAULT_DAILIES, DEFAULT_DAILY_DTO, TODAY } from "./decs";
-import { pingChanges, STORAGE } from "./browser";
+import { pingChanges, storage } from "./browser";
 import { UUIDTypes } from "uuid";
 import { v7 as uuidv7 } from 'uuid';
 
@@ -37,7 +37,7 @@ export async function fetchDailies(
 }
 
 export function saveDailies(dtos: DailyDto[], setter: (dtos: DailyDto[]) => void) {
-    STORAGE.set({ dailies: dtos });
+    storage.set({ dailies: dtos });
     localStorage.setItem("adsu-diem", JSON.stringify(dtos));
     console.log(`[debug] :: Saving ${dtos.length} dailies`)
     console.log(`        :: Dailies include\n: ${dtos.map((row: DailyDto) => row.name)}`)
