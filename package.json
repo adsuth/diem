@@ -1,12 +1,13 @@
 {
   "name": "diem",
-  "type": "module",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:firefox": "node scripts/ff_watch.js",
+    "build:firefox": "node scripts/ff_build_manifest.js"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
@@ -22,6 +23,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.7.0",
+    "nodemon": "^3.1.11",
     "sass": "^1.97.1",
     "typescript": "~5.8.3",
     "vite": "^7.0.5",

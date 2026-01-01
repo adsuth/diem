@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-
 import ColorSelect from "./Inputs/ColorSelect"
 import { DailyColor } from "../types/DailyColor"
 import IconSelect from "./Inputs/IconSelect"
@@ -17,6 +16,7 @@ import {
 } from "../lib/atoms"
 import { DailyDto } from "../types/DailyDto"
 import { DEFAULT_DAILY_DTO } from "@/content/decs"
+import { TABS } from "@/content/browser"
 
 export default function AddDailyModal() {
   const [dto, setDto] = useState<DailyDto>(DEFAULT_DAILY_DTO)
@@ -39,7 +39,7 @@ export default function AddDailyModal() {
   }, [editDailyId])
 
   useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    TABS.query({ active: true, currentWindow: true }, (tabs: any) => {
       const url = tabs[0]?.url
       console.log(`[debug] :: URL: ${url}`)
       setCurrentTabUrl(url as string)

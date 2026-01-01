@@ -1,8 +1,11 @@
 import { ChangedObjectStateEnum } from "./decs"
 
-// const BROWSER = typeof browser === "undefined" ? chrome : browser
 export const BROWSER = chrome
-export const storage = BROWSER.storage.local;
+export const STORAGE = BROWSER.storage.local;
+export const TABS = typeof (globalThis as any).browser !== "undefined" ? 
+    (globalThis as any).browser.tabs : 
+    chrome.tabs
+
 
 export function pingChanges(
     changed: ChangedObjectStateEnum,

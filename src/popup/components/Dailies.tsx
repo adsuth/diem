@@ -12,7 +12,6 @@ import {
   LockSimpleOpenIcon,
   PlusIcon,
   SirenIcon,
-  SmileyMeltingIcon,
 } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 import {
@@ -22,7 +21,6 @@ import {
   isListModeAtom,
   showCompleteAtom as hideCompleteAtom,
   sortModeAtom,
-  showCompleteAtom,
 } from "../lib/atoms"
 import {
   getCurrentSortModeIcon,
