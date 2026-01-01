@@ -1,52 +1,50 @@
-# React + Vite + CRXJS
+# Diem | Dailies Browser Extension
+[![Current Version](https://img.shields.io/amo/v/better-youtube-shorts?label=version&style=for-the-badge)](https://github.com/adsuth/diem/releases)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/bc96a67c5caa4c4481257b6fc57eacbf?style=for-the-badge)](https://chromewebstore.google.com/detail/better-youtube-shorts/bc96a67c5caa4c4481257b6fc57eacbf/reviews)
 
-This template helps you quickly start developing Chrome extensions with React, TypeScript and Vite. It includes the CRXJS Vite plugin for seamless Chrome extension development.
+[![Chrome Web Store users](https://img.shields.io/chrome-web-store/users/bc96a67c5caa4c4481257b6fc57eacbf?label=chrome&logo=googlechrome&logoColor=fff&style=for-the-badge)](https://chrome.google.com/webstore/detail/better-youtube-shorts/bc96a67c5caa4c4481257b6fc57eacbf)
+
+<p align="center">
+    <img src="./assets/Diem.svg" height="128"/>
+</p>
+
+<p align="center">
+    A browser extension for listing and tracking your daily games (like 
+    <a href="https://www.nytimes.com/games/wordle/index.html">
+        Wordle</a>, 
+    <a href="https://www.nytimes.com/games/wordle/index.html">
+    Queens</a>, and 
+    <a href="https://www.nytimes.com/games/wordle/index.html">
+    Flagle</a>).
+</p>
+
+<p align="center">
+    Diem supports both a Popup and Side Panel view. We've added some defaults to get you started as well.
+</p>
+
 
 ## Features
+- Create a collection of daily game links, all in one place.
+  - The link is automatically pulled from your current tab
+- Automatically tick dailies off for the day when you visit to keep track.
+- Filter out your completed dailies
+- Sort your dailies by...
+  - Time added
+  - Alphabetical order
+  - Color
+  - Icon
+- Swap between a Grid and List view for your daily items.
 
-- React with TypeScript
-- TypeScript support
-- Vite build tool
-- CRXJS Vite plugin integration
-- Chrome extension manifest configuration
+## Screenshots
 
-## Quick Start
+<p align="center">
+    <img src="./assets/screenshots/popup_search_grid.png" height="400"/>
+</p>
 
-1. Install dependencies:
+<p align="center">
+    <img src="./assets/screenshots/popup_search_list.png" height="400"/>
+</p>
 
-```bash
-npm install
-```
-
-2. Start development server:
-
-```bash
-npm run dev
-```
-
-3. Open Chrome and navigate to `chrome://extensions/`, enable "Developer mode", and load the unpacked extension from the `dist` directory.
-
-4. Build for production:
-
-```bash
-npm run build
-```
-
-## Project Structure
-
-- `src/popup/` - Extension popup UI
-- `src/content/` - Content scripts
-- `manifest.config.ts` - Chrome extension manifest configuration
-
-## Documentation
-
-- [React Documentation](https://reactjs.org/)
-- [Vite Documentation](https://vitejs.dev/)
-- [CRXJS Documentation](https://crxjs.dev/vite-plugin)
-
-## Chrome Extension Development Notes
-
-- Use `manifest.config.ts` to configure your extension
-- The CRXJS plugin automatically handles manifest generation
-- Content scripts should be placed in `src/content/`
-- Popup UI should be placed in `src/popup/`
+<p align="center">
+    <img src="./assets/screenshots/popup_edit.png" height="400"/>
+</p>
