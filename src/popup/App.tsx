@@ -1,11 +1,13 @@
 import Dailies from "./components/Dailies"
-import "./App.scss"
-import AddDailyModal from "./components/AddDailyModal"
+import "./Popup.scss"
+import DailyFormModal from "./components/modals/DailyFormModal"
+import DailySearchEditModal from "./components/modals/DailySearchEditModal"
 
 export default function App() {
   return (
     <>
-      <AddDailyModal />
+      <DailySearchEditModal />
+      <DailyFormModal />
       <Dailies />
     </>
   )

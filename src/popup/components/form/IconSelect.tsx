@@ -1,4 +1,4 @@
-import { DailyIcon, getIcon } from "@/popup/types/DailyIcon"
+import { DailyIcon, getIcon } from "@/popup/lib/types/DailyIcon"
 import { MouseEvent } from "react"
 
 interface IProps {

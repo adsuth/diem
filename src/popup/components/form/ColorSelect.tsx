@@ -1,4 +1,4 @@
-import { DailyColor } from "@/popup/types/DailyColor"
+import { DailyColor } from "@/popup/lib/types/DailyColor"
 import { CheckIcon } from "@phosphor-icons/react"
 import { MouseEvent } from "react"
 

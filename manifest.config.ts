@@ -21,7 +21,10 @@ export default defineManifest({
     "tabs",
   ],
   content_scripts: [{
-    js: ["src/content/main.ts"],
+    js: [
+        "src/content/main.ts", 
+        "src/content/daily.ts"
+    ],
     matches: [
         "<all_urls>"
     ],

@@ -29,7 +29,7 @@ function buildFirefoxManifest() {
     delete manifest.action;
 
     manifest.background = {}
-    manifest.background.scripts = [manifest.content_scripts[0].js[0]];
+    manifest.background.scripts = manifest.content_scripts[0].js;
     delete manifest.content_scripts[0].js;
 
     manifest.web_accessible_resources =

@@ -1,6 +1,6 @@
-import { DailyColor } from "@/popup/types/DailyColor";
-import { DailyDto } from "@/popup/types/DailyDto";
-import { DailyIcon } from "@/popup/types/DailyIcon";
+import { DailyColor } from "@/popup/lib/types/DailyColor";
+import { DailyDto } from "@/popup/lib/types/DailyDto";
+import { DailyIcon } from "@/popup/lib/types/DailyIcon";
 import { v7 as uuidv7} from "uuid";
 
 export enum ChangedObjectStateEnum {

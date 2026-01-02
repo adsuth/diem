@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react"
-import ColorSelect from "./Inputs/ColorSelect"
-import { DailyColor } from "../types/DailyColor"
-import IconSelect from "./Inputs/IconSelect"
-import { DailyIcon } from "../types/DailyIcon"
-import TextInput from "./Inputs/TextInput"
-import { validateEnum, validateString } from "../lib/validation"
-import { findDaily, saveDaily } from "@/content/main"
+import ColorSelect from "../form/ColorSelect"
+import { DailyColor } from "../../lib/types/DailyColor"
+import IconSelect from "../form/IconSelect"
+import { DailyIcon } from "../../lib/types/DailyIcon"
+import TextInput from "../form/TextInput"
+import { validateEnum, validateString } from "../../lib/validation"
+import { findDaily, saveDaily } from "@/content/daily"
 import { BackspaceIcon, FloppyDiskBackIcon, XIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 import {
-  addDailyModalIsOpenAtom,
   currentTabUrlAtom,
-  dailiesAtom,
+  allDailiesAtom,
   editDailyIdAtom,
-} from "../lib/atoms"
-import { DailyDto } from "../types/DailyDto"
+  editFormIsOpenAtom,
+} from "../../lib/atoms"
+import { DailyDto } from "../../lib/types/DailyDto"
 import { DEFAULT_DAILY_DTO } from "@/content/decs"
 import { browser, isChromium } from "@/content/browser"
 
-export default function AddDailyModal() {
+export default function DailyFormModal() {
+  const [editDailyId, setEditDailyId] = useAtom(editDailyIdAtom)
   const [dto, setDto] = useState<DailyDto>(DEFAULT_DAILY_DTO)
-  const [isOpen, setIsOpen] = useAtom(addDailyModalIsOpenAtom)
-  const [editDailyId] = useAtom(editDailyIdAtom)
-  const [, setDailies] = useAtom(dailiesAtom)
-  const [, setEditDailyId] = useAtom(editDailyIdAtom)
+  const [isOpen, setIsOpen] = useAtom(editFormIsOpenAtom)
+  const [, setDailies] = useAtom(allDailiesAtom)
   const [currentUrl, setCurrentTabUrl] = useAtom(currentTabUrlAtom)
+
   const [title, setTitle] = useState<string>(
     dto.id !== null ? `Edit ${dto.name}` : "New Daily"
   )
@@ -109,7 +109,11 @@ export default function AddDailyModal() {
   }
 
   return (
-    <div className="add-modal modal-wrapper" hidden={!isOpen}>
+    <div
+      className="modal modal-wrapper"
+      hidden={!isOpen}
+      daily-modal="edit-form"
+    >
       <header>
         <h1>{title}</h1>
         <button onClick={clearAndClose}>
@@ -117,7 +121,7 @@ export default function AddDailyModal() {
         </button>
       </header>
 
-      <div className="add-modal-content">
+      <section>
         <TextInput
           name={"name"}
           value={dto.name}
@@ -162,7 +166,7 @@ export default function AddDailyModal() {
             </div>
           </button>
         </div>
-      </div>
+      </section>
     </div>
   )
 }

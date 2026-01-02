@@ -1,58 +1,79 @@
-import { useAtom } from "jotai"
-import { DailyDto } from "../types/DailyDto"
-import { getIcon } from "../types/DailyIcon"
-import {
-  dailiesAtom,
-  editDailyIdAtom,
-  isDeleteModeAtom as isEditModeAtom,
-  isListModeAtom,
-} from "../lib/atoms"
+import { deleteDaily, setDailyOpened } from "@/content/daily"
 import {
   CheckIcon,
-  DotsSixIcon,
-  DotsSixVerticalIcon,
   PencilIcon,
   TrashIcon,
+  TrophyIcon,
 } from "@phosphor-icons/react"
-import { deleteDaily, setDailyOpened } from "@/content/main"
-import { UUIDTypes } from "uuid"
+import { useAtom } from "jotai"
 import { MouseEvent } from "react"
+import { UUIDTypes } from "uuid"
+import {
+  allDailiesAtom,
+  editDailyIdAtom,
+  editSearchIsOpenAtom,
+  isListViewAtom,
+} from "../lib/atoms"
+import { DailyDto } from "../lib/types/DailyDto"
+import { getIcon } from "../lib/types/DailyIcon"
+import { getDragHandleIcon } from "./icons/DragHandleIcon"
 
 interface IDailyProps {
   dto: DailyDto
 }
 
-function getDragHandleIcon(isEditMode: boolean, isListView: boolean) {
-  if (!isEditMode) return <></>
-
-  return isListView ? (
-    <DotsSixVerticalIcon
-      size={24}
-      weight={"bold"}
-      className="daily-drag-handle"
-      display={isEditMode ? "flex" : "none"}
-    />
-  ) : (
-    <DotsSixIcon
-      size={24}
-      weight={"bold"}
-      className="daily-drag-handle"
-      display={isEditMode ? "flex" : "none"}
-    />
-  )
+function stopPropagationAndRun(
+  ev: MouseEvent<HTMLButtonElement>,
+  callback: () => void
+) {
+  ev.stopPropagation()
+  callback()
 }
 
 export default function Daily(props: IDailyProps) {
   const { id, name, link, icon, color, wasOpenedToday } = props.dto
-  const [isListMode] = useAtom(isListModeAtom)
-  const [isEditMode] = useAtom(isEditModeAtom)
-  const [, setDailies] = useAtom(dailiesAtom)
+  const [isListView] = useAtom(isListViewAtom)
+  const [isEditMode] = useAtom(editSearchIsOpenAtom)
+  const [, setDailies] = useAtom(allDailiesAtom)
   const [, setEditDaily] = useAtom(editDailyIdAtom)
+
+  if (isEditMode) return <EditableDaily dto={props.dto} />
 
   async function openDailyLink() {
     await setDailyOpened(id as UUIDTypes, setDailies)
     window.open(link, "_blank")
   }
+
+  return (
+    <div
+      className="daily"
+      daily-color={color}
+      onClick={openDailyLink}
+      daily-complete={`${wasOpenedToday}`}
+    >
+      {getIcon(icon, isListView ? 24 : 48)}
+
+      <p>{name}</p>
+
+      {/* todo :: future improvements: show stats */}
+      {/* <div className="daily-actions" daily-edit-mode={"" + isEditMode}>
+        <button onClick={(ev) => stopPropagationAndRun(ev, editDaily)}>
+          <TrophyIcon size={24} weight={"bold"} />
+        </button>
+      </div> */}
+
+      <div className="daily-check" data-complete={wasOpenedToday}>
+        <CheckIcon size={24} weight={"bold"} />
+      </div>
+    </div>
+  )
+}
+
+export function EditableDaily(props: IDailyProps) {
+  const { id, name, icon, color } = props.dto
+  const [isEditMode] = useAtom(editSearchIsOpenAtom)
+  const [, setDailies] = useAtom(allDailiesAtom)
+  const [, setEditDaily] = useAtom(editDailyIdAtom)
 
   function editDaily() {
     setEditDaily(id)
@@ -62,42 +83,23 @@ export default function Daily(props: IDailyProps) {
     deleteDaily(id as UUIDTypes, setDailies)
   }
 
-  function stopPropagationAndRun(
-    ev: MouseEvent<HTMLButtonElement>,
-    callback: () => void
-  ) {
-    ev.stopPropagation()
-    callback()
-  }
-
   return (
-    <>
-      <div
-        className="daily"
-        daily-color={color}
-        onClick={openDailyLink}
-        daily-complete={`${wasOpenedToday}`}
-      >
-        {getDragHandleIcon(isEditMode, isListMode)}
+    <div className="daily" daily-color={color} daily-complete={false}>
+      {getDragHandleIcon({ isEditMode, isListView: true })}
 
-        {getIcon(icon, isListMode ? 24 : 48)}
+      {getIcon(icon, 24)}
 
-        <p>{name}</p>
+      <p>{name}</p>
 
-        <div className="daily-actions" daily-edit-mode={"" + isEditMode}>
-          <button onClick={(ev) => stopPropagationAndRun(ev, editDaily)}>
-            <PencilIcon size={24} weight={"bold"} />
-          </button>
+      <div className="daily-actions" daily-edit-mode="true">
+        <button onClick={(ev) => stopPropagationAndRun(ev, editDaily)}>
+          <PencilIcon size={24} weight={"bold"} />
+        </button>
 
-          <button onClick={(ev) => stopPropagationAndRun(ev, removeDaily)}>
-            <TrashIcon size={24} weight={"bold"} />
-          </button>
-        </div>
-
-        <div className="daily-check" data-complete={wasOpenedToday}>
-          <CheckIcon size={24} weight={"bold"} />
-        </div>
+        <button onClick={(ev) => stopPropagationAndRun(ev, removeDaily)}>
+          <TrashIcon size={24} weight={"bold"} />
+        </button>
       </div>
-    </>
+    </div>
   )
 }
