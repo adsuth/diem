@@ -58,6 +58,7 @@ export async function saveDaily(dto: DailyDto, setter: (dtos: DailyDto[]) => voi
     }
     else {
         dto.id = uuidv7()
+        dto.customOrder = dtos.length;
         dtos.push(dto)
     }
 
@@ -74,6 +75,20 @@ export async function findDaily(id: UUIDTypes | null): Promise<DailyDto> {
 export async function deleteDaily(id: UUIDTypes, setter: (dtos: DailyDto[]) => void) {
     console.log(`[debug] :: Deleting daily with id "${id}"`)
     let dtos = await fetchDailies()
+    const deletedDto = dtos.find(dto => dto.id === id)
+
+    if (!deletedDto) throw new Error("[diem] :: Cannot delete daily that doesnt exist!");
+    
+    const filteredDtos = dtos
+        .filter(dto => dto.id !== id)
+    
+    filteredDtos
+        .forEach((dto, index) => {
+            if (deletedDto.customOrder > dto.customOrder) {
+                filteredDtos[index].customOrder--
+            }
+        })
+
     saveDailies(dtos.filter(dto => dto.id !== id), setter)
 }
 
@@ -81,5 +96,6 @@ export async function setDailyOpened(id: UUIDTypes, setter: (dtos: DailyDto[]) =
     const dto = await findDaily(id)
     dto.openedUtc = new Date()
     dto.wasOpenedToday = true
+    dto.numberOfTimesOpened++
     saveDaily(dto, setter)
 }

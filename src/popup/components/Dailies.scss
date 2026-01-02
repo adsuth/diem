@@ -138,6 +138,13 @@ a {
         gap: 0.25rem;
         place-items: center;
 
+
+        .daily-drag-handle {
+            position: absolute;
+            left: 0;
+
+        }
+
         @media (min-width: 600px) {
             margin: 0 auto;
             max-width: 60%;
@@ -149,6 +156,10 @@ a {
 
         p {
             width: 100%;
+            max-width: 200px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         a, button {

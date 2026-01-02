@@ -12,4 +12,5 @@ export type DailyDto = {
     wasOpenedToday: boolean,
     modifiedUtc: Date | string,
     numberOfTimesOpened: number,
+    customOrder: number,
 }

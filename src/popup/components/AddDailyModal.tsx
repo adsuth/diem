@@ -25,13 +25,19 @@ export default function AddDailyModal() {
   const [, setDailies] = useAtom(dailiesAtom)
   const [, setEditDailyId] = useAtom(editDailyIdAtom)
   const [currentUrl, setCurrentTabUrl] = useAtom(currentTabUrlAtom)
-
-  const title = dto.id !== null ? `Edit ${dto.name}` : "New Daily"
+  const [title, setTitle] = useState<string>(
+    dto.id !== null ? `Edit ${dto.name}` : "New Daily"
+  )
 
   useEffect(() => {
-    if (editDailyId === null) return
+    if (editDailyId === null) {
+      setTitle("New Daily")
+      return
+    }
+
     ;(async () => {
       const editDto = await findDaily(editDailyId)
+      setTitle(`Edit ${editDto.name}`)
       setDto(editDto)
     })()
 

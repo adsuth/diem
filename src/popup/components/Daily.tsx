@@ -7,7 +7,13 @@ import {
   isDeleteModeAtom as isEditModeAtom,
   isListModeAtom,
 } from "../lib/atoms"
-import { CheckIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react"
+import {
+  CheckIcon,
+  DotsSixIcon,
+  DotsSixVerticalIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@phosphor-icons/react"
 import { deleteDaily, setDailyOpened } from "@/content/main"
 import { UUIDTypes } from "uuid"
 import { MouseEvent } from "react"
@@ -16,12 +22,31 @@ interface IDailyProps {
   dto: DailyDto
 }
 
+function getDragHandleIcon(isEditMode: boolean, isListView: boolean) {
+  if (!isEditMode) return <></>
+
+  return isListView ? (
+    <DotsSixVerticalIcon
+      size={24}
+      weight={"bold"}
+      className="daily-drag-handle"
+      display={isEditMode ? "flex" : "none"}
+    />
+  ) : (
+    <DotsSixIcon
+      size={24}
+      weight={"bold"}
+      className="daily-drag-handle"
+      display={isEditMode ? "flex" : "none"}
+    />
+  )
+}
+
 export default function Daily(props: IDailyProps) {
   const { id, name, link, icon, color, wasOpenedToday } = props.dto
   const [isListMode] = useAtom(isListModeAtom)
   const [isEditMode] = useAtom(isEditModeAtom)
   const [, setDailies] = useAtom(dailiesAtom)
-
   const [, setEditDaily] = useAtom(editDailyIdAtom)
 
   async function openDailyLink() {
@@ -53,7 +78,10 @@ export default function Daily(props: IDailyProps) {
         onClick={openDailyLink}
         daily-complete={`${wasOpenedToday}`}
       >
+        {getDragHandleIcon(isEditMode, isListMode)}
+
         {getIcon(icon, isListMode ? 24 : 48)}
+
         <p>{name}</p>
 
         <div className="daily-actions" daily-edit-mode={"" + isEditMode}>

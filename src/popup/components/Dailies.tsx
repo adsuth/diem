@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import "./Dailies.scss"
 import { DailyDto } from "../types/DailyDto"
 import Daily from "./Daily"
-import { fetchDailies } from "@/content/main"
+import { fetchDailies, saveDailies } from "@/content/main"
 import {
   FunnelIcon,
   GridFourIcon,
@@ -23,14 +23,32 @@ import {
   sortModeAtom,
 } from "../lib/atoms"
 import {
-  getCurrentSortModeIcon,
+  DailySortMode,
+  getCurrentSortModeIcon as getSortIcon,
   nextSortMode,
   sortDailyByMethod,
 } from "../types/DailySortMode"
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
+
+function getViewIcon(isListView: boolean) {
+  return isListView ? (
+    <ListIcon size={32} weight={"bold"} />
+  ) : (
+    <GridFourIcon size={32} weight={"bold"} />
+  )
+}
+
+function getEditIcon(isEditMode: boolean) {
+  return isEditMode ? (
+    <LockSimpleOpenIcon size={32} weight={"bold"} />
+  ) : (
+    <LockSimpleIcon size={32} weight={"fill"} />
+  )
+}
 
 export default function Dailies() {
-  const [dailies, setDailies] = useAtom(dailiesAtom)
-  const [filteredDailies, setFilteredDailies] = useState<DailyDto[]>([])
+  const [allDailies, setAllDailies] = useAtom(dailiesAtom)
+  const [dailies, setDailies] = useState<DailyDto[]>([])
   const [isOpen, setIsOpen] = useAtom(addDailyModalIsOpenAtom)
   const [isListMode, setIsListMode] = useAtom(isListModeAtom)
   const [hideComplete, setHideComplete] = useAtom(hideCompleteAtom)
@@ -38,36 +56,53 @@ export default function Dailies() {
   const [isEditMode, setIsEditMode] = useAtom(isDeleteModeAtom)
 
   useEffect(() => {
-    fetchDailies(setDailies)
+    fetchDailies(setAllDailies)
   }, [isOpen])
 
   useEffect(() => {
-    const filtered = [...dailies].filter(
+    const filtered = [...allDailies].filter(
       (daily) => !hideComplete || (hideComplete && !daily.wasOpenedToday)
     )
     const sorted = filtered.sort((a, b) => sortDailyByMethod(a, b, sortMode))
-
-    setFilteredDailies(sorted)
-  }, [dailies, hideComplete, sortMode])
+    setDailies(sorted)
+  }, [allDailies, hideComplete, sortMode])
 
   useEffect(() => {
-    filteredDailies
-  }, [sortMode])
+    if (!isEditMode) return
+    setHideComplete(false)
+  }, [isEditMode])
 
-  const listToggleIcon = isListMode ? (
-    <ListIcon size={32} weight={"bold"} />
-  ) : (
-    <GridFourIcon size={32} weight={"bold"} />
-  )
-  const editToggleIcon = isEditMode ? (
-    <LockSimpleOpenIcon size={32} weight={"bold"} />
-  ) : (
-    <LockSimpleIcon size={32} weight={"fill"} />
-  )
+  useEffect(() => {
+    if (!hideComplete) return
+    setIsEditMode(false)
+  }, [hideComplete])
+
+  function reorder(
+    list: DailyDto[],
+    startIndex: any,
+    endIndex: any
+  ): DailyDto[] {
+    const result = Array.from(list)
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removed)
+    return result
+  }
+
+  function onDragEnd(result: any) {
+    if (!result.destination) return
+
+    const newOrderedDailies = reorder(
+      dailies,
+      result.source.index,
+      result.destination.index
+    )
+
+    saveDailies(newOrderedDailies, setAllDailies)
+  }
 
   let noDailiesMessage = null
 
-  if (filteredDailies.length === 0 && hideComplete && dailies.length > 0)
+  if (dailies.length === 0 && hideComplete && allDailies.length > 0)
     noDailiesMessage = (
       <p className="no-daily-message">
         <span>
@@ -80,7 +115,7 @@ export default function Dailies() {
         <HandWavingIcon size={64} weight={"regular"} />
       </p>
     )
-  else if (dailies.length === 0)
+  else if (allDailies.length === 0)
     noDailiesMessage = (
       <p className="no-daily-message">
         <span>
@@ -105,15 +140,15 @@ export default function Dailies() {
           </button>
 
           <button onClick={() => setSortMode(nextSortMode(sortMode))}>
-            {getCurrentSortModeIcon(sortMode)}
+            {getSortIcon(sortMode)}
           </button>
 
           <button onClick={() => setIsListMode(!isListMode)}>
-            {listToggleIcon}
+            {getViewIcon(isListMode)}
           </button>
 
           <button onClick={() => setIsEditMode(!isEditMode)}>
-            {editToggleIcon}
+            {getEditIcon(isEditMode)}
           </button>
 
           <button onClick={() => setIsOpen(true)}>
@@ -122,13 +157,40 @@ export default function Dailies() {
         </div>
       </header>
 
-      {noDailiesMessage ?? (
-        <div className={isListMode ? "daily-list" : "daily-grid"}>
-          {filteredDailies?.map((dto: DailyDto) => (
-            <Daily dto={dto} key={dto.id as string} />
-          ))}
-        </div>
-      )}
+      <DragDropContext
+        onDragEnd={onDragEnd}
+        onDragStart={() => setSortMode(DailySortMode.Custom)}
+      >
+        <Droppable droppableId="list">
+          {(provided, _) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {noDailiesMessage ?? (
+                <div className={isListMode ? "daily-list" : "daily-grid"}>
+                  {dailies?.map((dto: DailyDto, index: number) => (
+                    <Draggable
+                      key={dto.id as string}
+                      draggableId={dto.id as string}
+                      index={index}
+                      isDragDisabled={!isEditMode}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <Daily dto={dto} />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                </div>
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </>
   )
 }
