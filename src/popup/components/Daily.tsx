@@ -1,10 +1,5 @@
 import { deleteDaily, setDailyOpened } from "@/content/daily"
-import {
-  CheckIcon,
-  PencilIcon,
-  TrashIcon,
-  TrophyIcon,
-} from "@phosphor-icons/react"
+import { CheckIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 import { MouseEvent } from "react"
 import { UUIDTypes } from "uuid"
@@ -35,7 +30,6 @@ export default function Daily(props: IDailyProps) {
   const [isListView] = useAtom(isListViewAtom)
   const [isEditMode] = useAtom(editSearchIsOpenAtom)
   const [, setDailies] = useAtom(allDailiesAtom)
-  const [, setEditDaily] = useAtom(editDailyIdAtom)
 
   if (isEditMode) return <EditableDaily dto={props.dto} />
 

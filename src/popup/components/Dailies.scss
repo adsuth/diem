@@ -41,6 +41,10 @@ header {
     place-items: center;
     justify-content: space-between;
 
+    h1 {
+        font-size: 1.75rem;
+    }
+
     div {
         display: flex;
         gap: 1rem;
@@ -409,4 +413,14 @@ a {
             }
         }
     }
+}
+
+.notification {
+    padding: 0.5rem 1rem;
+    background: #ffffffa3;
+    color: $red;
+    font-size: 1rem;
+    text-align: center;
+    text-wrap: balance;
+    margin-bottom: -1rem;
 }

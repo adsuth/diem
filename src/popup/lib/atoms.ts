@@ -3,6 +3,7 @@ import { DailyDto } from "./types/DailyDto";
 import { UUIDTypes } from "uuid";
 import { DailySortMode } from "./types/DailySortMode";
 
+export const isPopupAtom = atom<boolean>(false)
 export const editSearchIsOpenAtom = atom<boolean>(false)
 export const editFormIsOpenAtom = atom<boolean>(false)
 

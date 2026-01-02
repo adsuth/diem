@@ -6,15 +6,18 @@ import {
   allDailiesAtom,
   editFormIsOpenAtom,
   editSearchIsOpenAtom,
+  isPopupAtom,
 } from "../../lib/atoms"
 import { DailyDto } from "../../lib/types/DailyDto"
 import Daily from "../Daily"
 import NoDailiesMessage from "../messages/NoDailiesMessage"
+import { isChromium } from "@/content/browser"
 
 export default function DailySearchEditModal() {
   const [allDailies, setAllDailies] = useAtom(allDailiesAtom)
   const [isEditSearchOpen, setIsEditSearchOpen] = useAtom(editSearchIsOpenAtom)
   const [, setIsEditFormOpen] = useAtom(editFormIsOpenAtom)
+  const [isPopup] = useAtom(isPopupAtom)
 
   function reorder(
     list: DailyDto[],
@@ -70,6 +73,11 @@ export default function DailySearchEditModal() {
           </button>
         </div>
       </header>
+
+      <p className="notification" hidden={!isChromium && isPopup}>
+        Drag and drop does not work in Firefox popups, please use the Side Bar
+        view.
+      </p>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="list">

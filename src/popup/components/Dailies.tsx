@@ -25,7 +25,7 @@ export default function Dailies() {
   const [allDailies, setAllDailies] = useAtom(allDailiesAtom)
   const [dailies, setDailies] = useState<DailyDto[]>([])
 
-  const [isFormOpen, setIsFormOpen] = useAtom(editFormIsOpenAtom)
+  const [, setIsFormOpen] = useAtom(editFormIsOpenAtom)
   const [isEditOpen, setIsEditOpen] = useAtom(editSearchIsOpenAtom)
 
   const [isListMode, setIsListMode] = useAtom(isListViewAtom)

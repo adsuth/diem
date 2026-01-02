@@ -1,4 +1,7 @@
+import { isChromium } from "@/content/browser"
+import { isPopupAtom } from "@/popup/lib/atoms"
 import { DotsSixVerticalIcon, DotsSixIcon } from "@phosphor-icons/react"
+import { useAtom } from "jotai"
 
 interface IDndIconProps {
   isEditMode: boolean
@@ -6,8 +9,11 @@ interface IDndIconProps {
 }
 
 export function getDragHandleIcon(props: IDndIconProps) {
+  const [isPopup] = useAtom(isPopupAtom)
   const { isEditMode, isListView } = props
-  if (!isEditMode) return <></>
+  const isFirefoxPopup = isPopup && !isChromium
+
+  if (!isEditMode || isFirefoxPopup) return <></>
 
   return isListView ? (
     <DotsSixVerticalIcon
