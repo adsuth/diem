@@ -39,7 +39,13 @@ export default function DailySearchEditModal() {
       result.destination.index
     )
 
-    saveDailies(newOrderedDailies, setAllDailies)
+    console.log(
+      `${newOrderedDailies
+        .map((row) => `Order: ${row.customOrder} | Name: ${row.name}`)
+        .join("\n")}`
+    )
+
+    saveDailies([...newOrderedDailies], setAllDailies)
   }
 
   function openEditForm() {
@@ -74,7 +80,7 @@ export default function DailySearchEditModal() {
         </div>
       </header>
 
-      <p className="notification" hidden={!isChromium && isPopup}>
+      <p className="notification" hidden={isChromium || !isPopup}>
         Drag and drop does not work in Firefox popups, please use the Side Bar
         view.
       </p>
@@ -85,7 +91,7 @@ export default function DailySearchEditModal() {
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {noDailiesMessage ?? (
                 <div className="daily-list">
-                  {allDailies?.map((dto: DailyDto, index: number) => (
+                  {allDailies.map((dto: DailyDto, index: number) => (
                     <Draggable
                       key={dto.id as string}
                       draggableId={dto.id as string}

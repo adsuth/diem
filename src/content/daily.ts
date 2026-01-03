@@ -10,6 +10,17 @@ function dailyDtoFactory(dto: DailyDto): DailyDto {
     return dto
 }
 
+export async function getDailiesOrSetDefaults(
+  setter: (dtos: DailyDto[]) => void,
+) {
+    let dtos = await fetchDailies()
+    if (dtos.length === 0) {
+        dtos = [...DEFAULT_DAILIES]
+    }
+
+    saveDailies(dtos, setter)
+}
+
 export async function fetchDailies(
   setter?: (dtos: DailyDto[]) => void,
 ): Promise<DailyDto[]> {
@@ -18,11 +29,6 @@ export async function fetchDailies(
     );
 
     storage = storage?.map(dailyDtoFactory)
-
-    if (!storage || storage.length === 0) {
-        console.log(`[debug] :: No dailies found, setting defaults`)
-        storage = DEFAULT_DAILIES
-    }
 
     localStorage.setItem("adsu-diem", JSON.stringify(storage));
 
@@ -36,12 +42,13 @@ export async function fetchDailies(
     return storage
 }
 
-export function saveDailies(dtos: DailyDto[], setter: (dtos: DailyDto[]) => void) {
+export function saveDailies(dtosToSave: DailyDto[], setter: (dtos: DailyDto[]) => void) {
+    const dtos = dtosToSave.map((row: DailyDto, i: number) => ({...row, customOrder: i}))
+    
     storage.set({ dailies: dtos });
     localStorage.setItem("adsu-diem", JSON.stringify(dtos));
     console.log(`[debug] :: Saving ${dtos.length} dailies`)
     console.log(`        :: Dailies include\n: ${dtos.map((row: DailyDto) => row.name)}`)
-
     pingChanges(ChangedObjectStateEnum.DAILIES, dtos);
     setter(dtos)
 }

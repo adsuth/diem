@@ -25,7 +25,7 @@ export default function Dailies() {
   const [allDailies, setAllDailies] = useAtom(allDailiesAtom)
   const [dailies, setDailies] = useState<DailyDto[]>([])
 
-  const [, setIsFormOpen] = useAtom(editFormIsOpenAtom)
+  const [isFormOpen, setIsFormOpen] = useAtom(editFormIsOpenAtom)
   const [isEditOpen, setIsEditOpen] = useAtom(editSearchIsOpenAtom)
 
   const [isListMode, setIsListMode] = useAtom(isListViewAtom)
@@ -34,18 +34,19 @@ export default function Dailies() {
 
   useEffect(() => {
     fetchDailies(setAllDailies)
-  }, [isEditOpen])
+  }, [isFormOpen, isEditOpen])
 
   useEffect(() => {
     const filtered = [...allDailies].filter(
       (daily) => !hideComplete || (hideComplete && !daily.wasOpenedToday)
     )
     const sorted = filtered.sort((a, b) => sortDailyByMethod(a, b, sortMode))
+
     setDailies(sorted)
   }, [allDailies, hideComplete, sortMode])
 
   const noDailiesMessage =
-    allDailies.length === 0 && dailies.length === 0 ? (
+    dailies.length === 0 ? (
       <NoDailiesMessage
         allCount={allDailies.length}
         shownCount={dailies.length}

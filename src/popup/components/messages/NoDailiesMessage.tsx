@@ -7,8 +7,8 @@ interface INoDailiesMessageProps {
 
 export default function NoDailiesMessage(props: INoDailiesMessageProps) {
   let { allCount, shownCount } = props
-  shownCount = shownCount === null ? allCount : shownCount
-  if (allCount !== 0 && shownCount !== 0) return null
+  const shouldShow = !(allCount !== 0 && shownCount !== 0)
+  if (!shouldShow) return null
 
   let message = <></>
   const allComplete = shownCount === 0 && allCount > 0

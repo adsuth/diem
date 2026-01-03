@@ -16,14 +16,13 @@ import {
 } from "../../lib/atoms"
 import { DailyDto } from "../../lib/types/DailyDto"
 import { DEFAULT_DAILY_DTO } from "@/content/decs"
-import { browser, isChromium } from "@/content/browser"
 
 export default function DailyFormModal() {
   const [editDailyId, setEditDailyId] = useAtom(editDailyIdAtom)
   const [dto, setDto] = useState<DailyDto>(DEFAULT_DAILY_DTO)
   const [isOpen, setIsOpen] = useAtom(editFormIsOpenAtom)
   const [, setDailies] = useAtom(allDailiesAtom)
-  const [currentUrl, setCurrentTabUrl] = useAtom(currentTabUrlAtom)
+  const [currentUrl] = useAtom(currentTabUrlAtom)
 
   const [title, setTitle] = useState<string>(
     dto.id !== null ? `Edit ${dto.name}` : "New Daily"
@@ -43,35 +42,6 @@ export default function DailyFormModal() {
 
     setIsOpen(true)
   }, [editDailyId])
-
-  useEffect(() => {
-    // chromium specific (chrome, edge, etc)
-    if (isChromium) {
-      browser.tabs.onActivated.addListener((activeInfo: any) => {
-        browser.tabs.get(activeInfo.tabId, (tab: any) => {
-          setCurrentTabUrl(tab.url || "")
-        })
-      })
-
-      browser.tabs.query({ active: true, currentWindow: true }, (tabs: any) => {
-        const url = tabs[0]?.url
-        setCurrentTabUrl(url as string)
-      })
-      return
-    }
-
-    // firefox specific
-    browser.tabs.onActivated.addListener((activeInfo: any) => {
-      browser.tabs.get(activeInfo.tabId, (tab: any) => {
-        setCurrentTabUrl(tab.url || "")
-      })
-    })
-
-    browser.tabs.query({ active: true, currentWindow: true }, (tabs: any) => {
-      const url = tabs[0]?.url
-      setCurrentTabUrl(url as string)
-    })
-  }, [])
 
   useEffect(() => {
     if (editDailyId !== null) return

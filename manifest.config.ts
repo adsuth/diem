@@ -12,7 +12,7 @@ export default defineManifest({
     default_icon: {
       256: "assets/diem_256.png",
     },
-    default_popup: "src/popup/index.html?popup=true",
+    default_popup: "src/popup/index.html",
   },
   permissions: [
     "sidePanel",

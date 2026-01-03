@@ -1,17 +1,46 @@
 import Dailies from "./components/Dailies"
-import "./Popup.scss"
 import DailyFormModal from "./components/modals/DailyFormModal"
 import DailySearchEditModal from "./components/modals/DailySearchEditModal"
 import { useEffect } from "react"
 import { useAtom } from "jotai"
-import { isPopupAtom } from "./lib/atoms"
-import { isExtensionInPopupView } from "@/content/browser"
+import { allDailiesAtom, currentTabUrlAtom } from "./lib/atoms"
+import { browser, isChromium } from "@/content/browser"
+import { getDailiesOrSetDefaults } from "@/content/daily"
+import "./App.scss"
 
 export default function App() {
-  const [, setIsPopup] = useAtom(isPopupAtom)
+  const [, setAllDailies] = useAtom(allDailiesAtom)
+  const [, setCurrentTabUrl] = useAtom(currentTabUrlAtom)
 
   useEffect(() => {
-    setIsPopup(isExtensionInPopupView())
+    getDailiesOrSetDefaults(setAllDailies)
+
+    // chromium specific (chrome, edge, etc)
+    if (isChromium) {
+      browser.tabs.onActivated.addListener((activeInfo: any) => {
+        browser.tabs.get(activeInfo.tabId, (tab: any) => {
+          setCurrentTabUrl(tab.url || "")
+        })
+      })
+
+      browser.tabs.query({ active: true, currentWindow: true }, (tabs: any) => {
+        const url = tabs[0]?.url
+        setCurrentTabUrl(url as string)
+      })
+      return
+    }
+
+    // firefox specific
+    browser.tabs.onActivated.addListener((activeInfo: any) => {
+      browser.tabs.get(activeInfo.tabId, (tab: any) => {
+        setCurrentTabUrl(tab.url || "")
+      })
+    })
+
+    browser.tabs.query({ active: true, currentWindow: true }, (tabs: any) => {
+      const url = tabs[0]?.url
+      setCurrentTabUrl(url as string)
+    })
   }, [])
 
   return (

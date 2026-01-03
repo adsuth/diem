@@ -78,7 +78,7 @@ export function EditableDaily(props: IDailyProps) {
   }
 
   return (
-    <div className="daily" daily-color={color} daily-complete={false}>
+    <div className="daily" daily-color={color} daily-complete="false">
       {getDragHandleIcon({ isEditMode, isListView: true })}
 
       {getIcon(icon, 24)}
