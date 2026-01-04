@@ -7,13 +7,13 @@ import {
   isListViewAtom,
   showCompleteAtom,
   sortModeAtom,
+  viewTitleAtom,
   viewTypeAtom,
 } from "../lib/atoms"
 import {
   getCurrentSortModeIcon,
   nextSortMode,
 } from "../lib/types/DailySortMode"
-import { getViewTitle } from "../lib/types/DailyView"
 import ViewModeIcon from "./icons/ViewModeIcon"
 
 interface IHeaderProps {
@@ -32,6 +32,7 @@ export default function Header(props: IHeaderProps) {
 
   const [isHomeView, setIsHomeView] = useState(true)
   const [viewType] = useAtom(viewTypeAtom)
+  const [viewTitle] = useAtom(viewTitleAtom)
 
   useEffect(() => {
     setIsHomeView(!isEditSearchOpen && !isEditFormOpen)
@@ -39,7 +40,7 @@ export default function Header(props: IHeaderProps) {
 
   return (
     <header modal-type={viewType}>
-      <h1>{getViewTitle(viewType)}</h1>
+      <h1>{viewTitle}</h1>
       <div>
         <button
           onClick={() => setShowComplete(!showComplete)}
@@ -67,7 +68,7 @@ export default function Header(props: IHeaderProps) {
           <XIcon size={32} weight="bold" />
         </button>
 
-        <button onClick={() => setIsEditFormOpen(true)}>
+        <button onClick={() => setIsEditFormOpen(true)} hidden={isEditFormOpen}>
           <PlusIcon size={32} weight={"bold"} />
         </button>
       </div>

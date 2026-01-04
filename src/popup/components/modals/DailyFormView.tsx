@@ -1,5 +1,6 @@
 import { findDaily, saveDaily } from "@/content/daily"
 import { DEFAULT_DAILY_DTO } from "@/content/decs"
+import { getViewTitle, ViewType } from "@/popup/lib/types/DailyView"
 import { BackspaceIcon, FloppyDiskBackIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 import { useEffect, useState } from "react"
@@ -8,6 +9,8 @@ import {
   currentTabUrlAtom,
   editDailyIdAtom,
   editFormIsOpenAtom,
+  viewTitleAtom,
+  viewTypeAtom,
 } from "../../lib/atoms"
 import { DailyColor } from "../../lib/types/DailyColor"
 import { DailyDto } from "../../lib/types/DailyDto"
@@ -17,35 +20,35 @@ import ColorSelect from "../form/ColorSelect"
 import IconSelect from "../form/IconSelect"
 import TextInput from "../form/TextInput"
 import Header from "../Header"
-import { getViewTitle, ViewType } from "@/popup/lib/types/DailyView"
 
 export default function DailyFormModal() {
   const [editDailyId, setEditDailyId] = useAtom(editDailyIdAtom)
   const [dto, setDto] = useState<DailyDto>(DEFAULT_DAILY_DTO)
-  const [isOpen, setIsOpen] = useAtom(editFormIsOpenAtom)
+  const [isEditFormOpen, setIsEditFormOpen] = useAtom(editFormIsOpenAtom)
   const [, setDailies] = useAtom(allDailiesAtom)
   const [currentUrl] = useAtom(currentTabUrlAtom)
 
-  const [title, setTitle] = useState<string>(
-    dto.id !== null ? `Edit ${dto.name}` : "New Daily"
-  )
+  const [viewType] = useAtom(viewTypeAtom)
+  const [, setViewTitle] = useAtom(viewTitleAtom)
 
   useEffect(() => {
-    const titleTemplate = getViewTitle(ViewType.EditFormModal)
+    if (viewType !== ViewType.EditForm) return
+
+    const titleTemplate = getViewTitle(ViewType.EditForm, editDailyId === null)
 
     if (editDailyId === null) {
-      setTitle(titleTemplate.replace("{0}", "New Daily"))
+      setViewTitle(titleTemplate)
       return
     }
 
     ;(async () => {
       const editDto = await findDaily(editDailyId)
-      setTitle(titleTemplate.replace("{0}", editDto.name))
+      setViewTitle(titleTemplate.replace("{0}", editDto.name))
       setDto(editDto)
     })()
 
-    setIsOpen(true)
-  }, [editDailyId])
+    setIsEditFormOpen(true)
+  }, [viewType])
 
   useEffect(() => {
     if (editDailyId !== null) return
@@ -72,7 +75,7 @@ export default function DailyFormModal() {
 
   function close() {
     setEditDailyId(null)
-    setIsOpen(false)
+    setIsEditFormOpen(false)
   }
 
   async function submit() {
@@ -83,12 +86,12 @@ export default function DailyFormModal() {
 
   return (
     <div
-      className="modal modal-wrapper"
-      hidden={!isOpen}
+      className="view view-wrapper"
+      hidden={!isEditFormOpen}
       daily-modal="edit-form"
     >
       <Header close={() => clearAndClose()} />
-      <section hidden={!isOpen}>
+      <section hidden={!isEditFormOpen}>
         <TextInput
           name={"name"}
           value={dto.name}

@@ -1,15 +1,16 @@
 export enum ViewType {
   Home = "",
-  EditSearchModal = "edit-search",
-  EditFormModal = "edit-form",
+  EditSearch = "edit-search",
+  EditForm = "edit-form",
 }
 
-export function getViewTitle(type: ViewType) {
+export function getViewTitle(type: ViewType, isNew: boolean = false): string {
   switch (type) {
-    case ViewType.EditSearchModal:
+    case ViewType.EditSearch:
       return "Edit Your Dailies"
-    case ViewType.EditFormModal:
-      return "Edit {0}"
+    case ViewType.EditForm:
+      if (isNew) return "New Daily"
+      else return "Edit {0}"
     default:
       return "Diem"
   }
@@ -24,7 +25,9 @@ export function getViewType(props: IViewTypeGetter) {
   const { isFormEditOpen, isSearchEditOpen } = props
 
   // order of precedence, descending
-  if (isFormEditOpen) return ViewType.EditFormModal
-  if (isSearchEditOpen) return ViewType.EditSearchModal
+  if (isFormEditOpen) return ViewType.EditForm
+  if (isSearchEditOpen) return ViewType.EditSearch
   return ViewType.Home
 }
+
+export const staticTitles = [ViewType.Home, ViewType.EditSearch]

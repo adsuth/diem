@@ -4,7 +4,6 @@ import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
 import { useAtom } from "jotai"
 import {
   allDailiesAtom,
-  editFormIsOpenAtom,
   editSearchIsOpenAtom,
   isPopupAtom,
 } from "../../lib/atoms"
@@ -16,7 +15,6 @@ import NoDailiesMessage from "../messages/NoDailiesMessage"
 export default function DailySearchEditModal() {
   const [allDailies, setAllDailies] = useAtom(allDailiesAtom)
   const [isEditSearchOpen, setIsEditSearchOpen] = useAtom(editSearchIsOpenAtom)
-  const [, setIsEditFormOpen] = useAtom(editFormIsOpenAtom)
   const [isPopup] = useAtom(isPopupAtom)
 
   function reorder(
@@ -42,10 +40,6 @@ export default function DailySearchEditModal() {
     saveDailies([...newOrderedDailies], setAllDailies)
   }
 
-  function openEditForm() {
-    setIsEditFormOpen(true)
-  }
-
   function close() {
     setIsEditSearchOpen(false)
   }
@@ -56,12 +50,16 @@ export default function DailySearchEditModal() {
     ) : null
 
   return (
-    <div className="modal modal-wrapper" hidden={!isEditSearchOpen}>
+    <div
+      className="view view-wrapper"
+      hidden={!isEditSearchOpen}
+      daily-modal="edit-search"
+    >
       <Header close={() => close()} />
 
       <p className="notification" hidden={isChromium || !isPopup}>
         Drag and drop does not work in Firefox popups, please use the Side Bar
-        view.
+        view to update the order.
       </p>
 
       <DragDropContext onDragEnd={onDragEnd}>

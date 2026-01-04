@@ -2,7 +2,6 @@ import { useAtom } from "jotai"
 import { useEffect, useState } from "react"
 import {
   allDailiesAtom,
-  editSearchIsOpenAtom,
   isListViewAtom,
   showCompleteAtom,
   sortModeAtom,
@@ -11,8 +10,8 @@ import { DailyDto } from "../lib/types/DailyDto"
 import { sortDailyByMethod } from "../lib/types/DailySortMode"
 import "./Dailies.scss"
 import Daily from "./Daily"
-import NoDailiesMessage from "./messages/NoDailiesMessage"
 import Header from "./Header"
+import NoDailiesMessage from "./messages/NoDailiesMessage"
 
 export default function Dailies() {
   const [dailies, setDailies] = useState<DailyDto[]>([])

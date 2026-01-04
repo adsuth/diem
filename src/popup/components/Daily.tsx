@@ -1,17 +1,19 @@
 import { deleteDaily, setDailyOpened } from "@/content/daily"
 import { CheckIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
-import { MouseEvent } from "react"
+import { MouseEvent, useEffect } from "react"
 import { UUIDTypes } from "uuid"
 import {
   allDailiesAtom,
   editDailyIdAtom,
+  editFormIsOpenAtom,
   editSearchIsOpenAtom,
   isListViewAtom,
 } from "../lib/atoms"
 import { DailyDto } from "../lib/types/DailyDto"
 import { getIcon } from "../lib/types/DailyIcon"
 import { getDragHandleIcon } from "./icons/DragHandleIcon"
+import { ViewType } from "../lib/types/DailyView"
 
 interface IDailyProps {
   dto: DailyDto
@@ -68,9 +70,11 @@ export function EditableDaily(props: IDailyProps) {
   const [isEditMode] = useAtom(editSearchIsOpenAtom)
   const [, setDailies] = useAtom(allDailiesAtom)
   const [, setEditDaily] = useAtom(editDailyIdAtom)
+  const [, setIsEditFormOpen] = useAtom(editFormIsOpenAtom)
 
   function editDaily() {
     setEditDaily(id)
+    setIsEditFormOpen(true)
   }
 
   function removeDaily() {

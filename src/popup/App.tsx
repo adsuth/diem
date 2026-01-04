@@ -1,20 +1,23 @@
 import { browser, isChromium } from "@/content/browser"
 import { fetchDailies, getDailiesOrSetDefaults } from "@/content/daily"
 import { useAtom } from "jotai"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import "./App.scss"
 import Dailies from "./components/Dailies"
-import DailyFormModal from "./components/modals/DailyFormModal"
-import DailySearchEditModal from "./components/modals/DailySearchEditModal"
+import DailyFormModal from "./components/modals/DailyFormView"
+import DailySearchEditModal from "./components/modals/DailySearchEditView"
 import {
   allDailiesAtom,
   currentTabUrlAtom,
+  editDailyIdAtom,
   editFormIsOpenAtom,
   editSearchIsOpenAtom,
   sortModeAtom,
+  viewTitleAtom,
+  viewTypeAtom,
 } from "./lib/atoms"
 import { DailySortMode } from "./lib/types/DailySortMode"
-import { getViewType, ViewType } from "./lib/types/DailyView"
+import { getViewTitle, getViewType, staticTitles } from "./lib/types/DailyView"
 
 export default function App() {
   const [, setAllDailies] = useAtom(allDailiesAtom)
@@ -23,7 +26,8 @@ export default function App() {
   const [isFormEditOpen] = useAtom(editFormIsOpenAtom)
 
   const [, setSortMode] = useAtom(sortModeAtom)
-  const [, setViewType] = useState(ViewType.Home)
+  const [viewType, setViewType] = useAtom(viewTypeAtom)
+  const [, setViewTitle] = useAtom(viewTitleAtom)
 
   //   function setSettings(dto: DailySettings) {
   //     const { showComplete, sortMode, isListView } = dto
@@ -74,6 +78,11 @@ export default function App() {
     setSortMode(DailySortMode.Custom)
     setViewType(getViewType({ isFormEditOpen, isSearchEditOpen }))
   }, [isFormEditOpen, isSearchEditOpen])
+
+  useEffect(() => {
+    if (!staticTitles.includes(viewType)) return
+    setViewTitle(getViewTitle(viewType))
+  }, [viewType])
 
   function getBody() {
     // order of precedence, descending
