@@ -19,11 +19,6 @@ const dailySortModeCount = Object.values(DailySortMode).filter(
 ).length
 
 export function nextSortMode(mode: DailySortMode): DailySortMode {
-  console.log(
-    `[debug] :: Sorting from ${DailySortMode[mode]} to ${
-      DailySortMode[(mode + 1) % dailySortModeCount]
-    }`
-  )
   return (mode + 1) % dailySortModeCount
 }
 
@@ -38,7 +33,6 @@ export function sortDailyByMethod(
   b: DailyDto,
   mode: DailySortMode
 ): number {
-  console.log(`[debug] :: Sorting by ${DailySortMode[mode]}`)
   switch (mode) {
     case DailySortMode.Custom:
       return sortBy(a.customOrder, b.customOrder)

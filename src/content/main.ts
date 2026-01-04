@@ -1,8 +1,6 @@
-// todo
-// browser.runtime.setUninstallURL()
+import { browser } from "./browser"
 
-const DEBUG: boolean = true
-if (!DEBUG) {
-    console.log = () => {}
-    console.table = () => {}
-}
+browser.runtime.setUninstallURL("https://github.com/adsuth/diem/blob/main/UNINSTALL.md")
+browser.runtime.setUninstallURL("https://github.com/adsuth/diem/blob/main/UNINSTALL.md")
+
+export const DEBUG: boolean = false

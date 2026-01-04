@@ -39,12 +39,6 @@ export default function DailySearchEditModal() {
       result.destination.index
     )
 
-    console.log(
-      `${newOrderedDailies
-        .map((row) => `Order: ${row.customOrder} | Name: ${row.name}`)
-        .join("\n")}`
-    )
-
     saveDailies([...newOrderedDailies], setAllDailies)
   }
 

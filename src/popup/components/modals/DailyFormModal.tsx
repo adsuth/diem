@@ -72,7 +72,6 @@ export default function DailyFormModal() {
   }
 
   async function submit() {
-    console.log(`[debug] :: Saving new daily "${dto.name}"`)
     if (!isValid()) return
     await saveDaily(dto, setDailies)
     clearAndClose()

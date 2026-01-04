@@ -3,8 +3,14 @@ import { UUIDTypes } from "uuid";
 import {v7 as uuidv7} from "uuid"
 import { storage, pingChanges } from "./browser";
 import { TODAY, DEFAULT_DAILIES, ChangedObjectStateEnum, DEFAULT_DAILY_DTO } from "./decs";
+import { DEBUG } from "./main";
 
 const DAILIES_STORAGE_KEY = "diem--dailies"
+
+if (!DEBUG) {
+    globalThis.console.log = () => {}
+    globalThis.console.table = () => {}
+}
 
 function dailyDtoFactory(dto: DailyDto): DailyDto {
     dto.openedUtc = new Date(dto.openedUtc as string)
@@ -27,17 +33,17 @@ export async function fetchDailies(
   setter?: (dtos: DailyDto[]) => void,
 ): Promise<DailyDto[]> {
     let storage = JSON.parse(
-        localStorage.getItem("adsu-diem--dailies") as string,
+        localStorage.getItem(DAILIES_STORAGE_KEY) as string,
     );
 
     if (!storage) {
         console.log(`[debug] :: Initializing dailies storage`)
         storage = []
-        localStorage.setItem("adsu-diem--dailies", JSON.stringify(storage));
+        localStorage.setItem(DAILIES_STORAGE_KEY, JSON.stringify(storage));
     }
     
     storage = storage?.map(dailyDtoFactory)
-    localStorage.setItem("adsu-diem--dailies", JSON.stringify(storage));
+    localStorage.setItem(DAILIES_STORAGE_KEY, JSON.stringify(storage));
 
     if (setter) {
         setter(storage);
@@ -53,7 +59,7 @@ export function saveDailies(dtosToSave: DailyDto[], setter: (dtos: DailyDto[]) =
     const dtos = dtosToSave.map((row: DailyDto, i: number) => ({...row, customOrder: i}))
     
     storage.set({ dailies: dtos });
-    localStorage.setItem("adsu-diem--dailies", JSON.stringify(dtos));
+    localStorage.setItem(DAILIES_STORAGE_KEY, JSON.stringify(dtos));
     console.log(`[debug] :: Saving ${dtos.length} dailies`)
     console.log(`        :: Dailies include\n: ${dtos.map((row: DailyDto) => row.name)}`)
     pingChanges(ChangedObjectStateEnum.DAILIES, dtos);
@@ -61,16 +67,15 @@ export function saveDailies(dtosToSave: DailyDto[], setter: (dtos: DailyDto[]) =
 }
 
 export async function saveDaily(dto: DailyDto, setter: (dtos: DailyDto[]) => void) {
-    console.log(`[debug] :: Fetching all dailies`)
-
     const dtos = await fetchDailies()
-    console.log(`[debug] :: Found ${dtos.length} dailies, adding new daily`)
 
     if (dto.id !== null) {
+        console.log(`[debug] :: Saving existing daily "${dto.name}"`)
         const indexOf = dtos.findIndex(row => row.id === dto.id)
         dtos[indexOf] = dto;
     }
     else {
+        console.log(`[debug] :: Saving new daily "${dto.name}"`)
         dto.id = uuidv7()
         dto.customOrder = dtos.length;
         dtos.push(dto)
