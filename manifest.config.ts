@@ -17,20 +17,9 @@ export default defineManifest({
   },
   permissions: [
     "sidePanel",
-    "contentSettings",
     "storage",
     "tabs",
   ],
-  content_scripts: [{
-    js: [
-        "src/content/main.ts", 
-        "src/content/daily.ts",
-        "src/content/settings.ts",
-    ],
-    matches: [
-        "<all_urls>"
-    ],
-  }],
   side_panel: {
     default_path: "src/sidepanel/index.html",
   },

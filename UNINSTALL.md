@@ -9,6 +9,6 @@ Thanks for trying out Diem, if you happened to stumble upon some horrible bugs o
 If you've got the know-how (and will), please feel free to raise some PRs and we'll be sure to give them a look!
 
 ## Thank you!
-You may reinstall the extension at any time by visiting the [Chrome Web Store](https://chrome.google.com/webstore/detail/diem/bc96a67c5caa4c4481257b6fc57eacbf)
+You may reinstall the extension at any time by visiting the [Chrome Web Store](https://chrome.google.com/webstore/detail/diem/ljpkgpdpaicoedoepocclbjbhdpjbjpm)
 
 Thank you again for giving us a shot!

@@ -1,5 +1,3 @@
-import { findDaily, saveDaily } from "@/content/daily"
-import { DEFAULT_DAILY_DTO } from "@/content/decs"
 import { getViewTitle, ViewType } from "@/popup/lib/types/DailyView"
 import { BackspaceIcon, FloppyDiskBackIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
@@ -20,6 +18,8 @@ import ColorSelect from "../form/ColorSelect"
 import IconSelect from "../form/IconSelect"
 import TextInput from "../form/TextInput"
 import Header from "../Header"
+import { findDaily, saveDaily } from "@/popup/lib/daily"
+import { DEFAULT_DAILY_DTO } from "@/popup/lib/decs"
 
 export default function DailyFormModal() {
   const [editDailyId, setEditDailyId] = useAtom(editDailyIdAtom)

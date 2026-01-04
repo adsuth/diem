@@ -1,5 +1,3 @@
-import { browser, isChromium } from "@/content/browser"
-import { fetchDailies, getDailiesOrSetDefaults } from "@/content/daily"
 import { useAtom } from "jotai"
 import { useEffect } from "react"
 import "./App.scss"
@@ -15,6 +13,8 @@ import {
   viewTitleAtom,
   viewTypeAtom,
 } from "./lib/atoms"
+import { browser, isChromium } from "./lib/browser"
+import { fetchDailies, getDailiesOrSetDefaults } from "./lib/daily"
 import { DailySortMode } from "./lib/types/DailySortMode"
 import { getViewTitle, getViewType, staticTitles } from "./lib/types/DailyView"
 

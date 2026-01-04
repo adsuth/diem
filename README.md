@@ -1,8 +1,8 @@
 # Diem | Dailies Browser Extension
-[![Current Version](https://img.shields.io/amo/v/better-youtube-shorts?label=version&style=for-the-badge)](https://github.com/adsuth/diem/releases)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/bc96a67c5caa4c4481257b6fc57eacbf?style=for-the-badge)](https://chromewebstore.google.com/detail/better-youtube-shorts/bc96a67c5caa4c4481257b6fc57eacbf/reviews)
+[![Current Version](https://img.shields.io/amo/v/diem?label=version&style=for-the-badge)](https://github.com/adsuth/diem/releases)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/ljpkgpdpaicoedoepocclbjbhdpjbjpm?style=for-the-badge)](https://chromewebstore.google.com/detail/diem/ljpkgpdpaicoedoepocclbjbhdpjbjpm/reviews)
 
-[![Chrome Web Store users](https://img.shields.io/chrome-web-store/users/bc96a67c5caa4c4481257b6fc57eacbf?label=chrome&logo=googlechrome&logoColor=fff&style=for-the-badge)](https://chrome.google.com/webstore/detail/better-youtube-shorts/bc96a67c5caa4c4481257b6fc57eacbf)
+[![Chrome Web Store users](https://img.shields.io/chrome-web-store/users/ljpkgpdpaicoedoepocclbjbhdpjbjpm?label=chrome&logo=googlechrome&logoColor=fff&style=for-the-badge)](https://chrome.google.com/webstore/detail/diem/ljpkgpdpaicoedoepocclbjbhdpjbjpm)
 
 <p align="center">
     <img src="./assets/Diem.svg" height="128"/>

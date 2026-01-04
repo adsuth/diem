@@ -1,5 +1,5 @@
-import { isChromium } from "@/content/browser"
-import { saveDailies } from "@/content/daily"
+import { isChromium } from "@/popup/lib/browser"
+import { saveDailies } from "@/popup/lib/daily"
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
 import { useAtom } from "jotai"
 import {

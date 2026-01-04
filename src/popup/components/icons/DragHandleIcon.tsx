@@ -1,5 +1,5 @@
-import { isChromium } from "@/content/browser"
 import { isPopupAtom } from "@/popup/lib/atoms"
+import { isChromium } from "@/popup/lib/browser"
 import { DotsSixVerticalIcon, DotsSixIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 

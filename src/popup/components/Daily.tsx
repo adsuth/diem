@@ -1,4 +1,3 @@
-import { deleteDaily, setDailyOpened } from "@/content/daily"
 import { CheckIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 import { MouseEvent } from "react"
@@ -10,6 +9,7 @@ import {
   editSearchIsOpenAtom,
   isListViewAtom,
 } from "../lib/atoms"
+import { deleteDaily, setDailyOpened } from "../lib/daily"
 import { DailyDto } from "../lib/types/DailyDto"
 import { getIcon } from "../lib/types/DailyIcon"
 import { getDragHandleIcon } from "./icons/DragHandleIcon"
