@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react"
-import ColorSelect from "../form/ColorSelect"
-import { DailyColor } from "../../lib/types/DailyColor"
-import IconSelect from "../form/IconSelect"
-import { DailyIcon } from "../../lib/types/DailyIcon"
-import TextInput from "../form/TextInput"
-import { validateEnum, validateString } from "../../lib/validation"
 import { findDaily, saveDaily } from "@/content/daily"
-import { BackspaceIcon, FloppyDiskBackIcon, XIcon } from "@phosphor-icons/react"
+import { DEFAULT_DAILY_DTO } from "@/content/decs"
+import { BackspaceIcon, FloppyDiskBackIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
+import { useEffect, useState } from "react"
 import {
-  currentTabUrlAtom,
   allDailiesAtom,
+  currentTabUrlAtom,
   editDailyIdAtom,
   editFormIsOpenAtom,
 } from "../../lib/atoms"
+import { DailyColor } from "../../lib/types/DailyColor"
 import { DailyDto } from "../../lib/types/DailyDto"
-import { DEFAULT_DAILY_DTO } from "@/content/decs"
+import { DailyIcon } from "../../lib/types/DailyIcon"
+import { validateEnum, validateString } from "../../lib/validation"
+import ColorSelect from "../form/ColorSelect"
+import IconSelect from "../form/IconSelect"
+import TextInput from "../form/TextInput"
+import Header from "../Header"
+import { getViewTitle, ViewType } from "@/popup/lib/types/DailyView"
 
 export default function DailyFormModal() {
   const [editDailyId, setEditDailyId] = useAtom(editDailyIdAtom)
@@ -29,14 +31,16 @@ export default function DailyFormModal() {
   )
 
   useEffect(() => {
+    const titleTemplate = getViewTitle(ViewType.EditFormModal)
+
     if (editDailyId === null) {
-      setTitle("New Daily")
+      setTitle(titleTemplate.replace("{0}", "New Daily"))
       return
     }
 
     ;(async () => {
       const editDto = await findDaily(editDailyId)
-      setTitle(`Edit ${editDto.name}`)
+      setTitle(titleTemplate.replace("{0}", editDto.name))
       setDto(editDto)
     })()
 
@@ -83,14 +87,8 @@ export default function DailyFormModal() {
       hidden={!isOpen}
       daily-modal="edit-form"
     >
-      <header>
-        <h1>{title}</h1>
-        <button onClick={clearAndClose}>
-          <XIcon size={32} weight="bold" />
-        </button>
-      </header>
-
-      <section>
+      <Header close={() => clearAndClose()} />
+      <section hidden={!isOpen}>
         <TextInput
           name={"name"}
           value={dto.name}

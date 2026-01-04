@@ -1,6 +1,6 @@
+import { isChromium } from "@/content/browser"
 import { saveDailies } from "@/content/daily"
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
-import { PlusIcon, XIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
 import {
   allDailiesAtom,
@@ -10,8 +10,8 @@ import {
 } from "../../lib/atoms"
 import { DailyDto } from "../../lib/types/DailyDto"
 import Daily from "../Daily"
+import Header from "../Header"
 import NoDailiesMessage from "../messages/NoDailiesMessage"
-import { isChromium } from "@/content/browser"
 
 export default function DailySearchEditModal() {
   const [allDailies, setAllDailies] = useAtom(allDailiesAtom)
@@ -56,23 +56,8 @@ export default function DailySearchEditModal() {
     ) : null
 
   return (
-    <div
-      className="modal modal-wrapper"
-      daily-modal="edit-search"
-      hidden={!isEditSearchOpen}
-    >
-      <header>
-        <h1>Edit Your Dailies</h1>
-        <div>
-          <button onClick={close}>
-            <XIcon size={32} weight="bold" />
-          </button>
-
-          <button onClick={openEditForm}>
-            <PlusIcon size={32} weight={"bold"} />
-          </button>
-        </div>
-      </header>
+    <div className="modal modal-wrapper" hidden={!isEditSearchOpen}>
+      <Header close={() => close()} />
 
       <p className="notification" hidden={isChromium || !isPopup}>
         Drag and drop does not work in Firefox popups, please use the Side Bar

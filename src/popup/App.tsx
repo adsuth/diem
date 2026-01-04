@@ -1,20 +1,29 @@
 import { browser, isChromium } from "@/content/browser"
-import { getDailiesOrSetDefaults } from "@/content/daily"
+import { fetchDailies, getDailiesOrSetDefaults } from "@/content/daily"
 import { useAtom } from "jotai"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import "./App.scss"
 import Dailies from "./components/Dailies"
 import DailyFormModal from "./components/modals/DailyFormModal"
 import DailySearchEditModal from "./components/modals/DailySearchEditModal"
-import { allDailiesAtom, currentTabUrlAtom } from "./lib/atoms"
+import {
+  allDailiesAtom,
+  currentTabUrlAtom,
+  editFormIsOpenAtom,
+  editSearchIsOpenAtom,
+  sortModeAtom,
+} from "./lib/atoms"
+import { DailySortMode } from "./lib/types/DailySortMode"
+import { getViewType, ViewType } from "./lib/types/DailyView"
 
 export default function App() {
   const [, setAllDailies] = useAtom(allDailiesAtom)
   const [, setCurrentTabUrl] = useAtom(currentTabUrlAtom)
+  const [isSearchEditOpen] = useAtom(editSearchIsOpenAtom)
+  const [isFormEditOpen] = useAtom(editFormIsOpenAtom)
 
-  //   const [showComplete, setShowComplete] = useAtom(showCompleteAtom)
-  //   const [sortMode, setSortMode] = useAtom(sortModeAtom)
-  //   const [isListView, setIsListView] = useAtom(isListViewAtom)
+  const [, setSortMode] = useAtom(sortModeAtom)
+  const [, setViewType] = useState(ViewType.Home)
 
   //   function setSettings(dto: DailySettings) {
   //     const { showComplete, sortMode, isListView } = dto
@@ -60,11 +69,18 @@ export default function App() {
     })
   }, [])
 
-  return (
-    <>
-      <DailySearchEditModal />
-      <DailyFormModal />
-      <Dailies />
-    </>
-  )
+  useEffect(() => {
+    fetchDailies(setAllDailies)
+    setSortMode(DailySortMode.Custom)
+    setViewType(getViewType({ isFormEditOpen, isSearchEditOpen }))
+  }, [isFormEditOpen, isSearchEditOpen])
+
+  function getBody() {
+    // order of precedence, descending
+    if (isFormEditOpen) return <DailyFormModal />
+    if (isSearchEditOpen) return <DailySearchEditModal />
+    return <Dailies />
+  }
+
+  return <>{getBody()}</>
 }
