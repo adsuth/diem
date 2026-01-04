@@ -10,6 +10,7 @@
     "build:firefox": "node scripts/ff_build_manifest.js"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@phosphor-icons/react": "^2.1.10",
     "jotai": "^2.16.1",
     "react": "^19.1.0",

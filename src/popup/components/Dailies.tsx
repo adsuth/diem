@@ -1,99 +1,59 @@
-import { useEffect, useState } from "react"
-import "./Dailies.scss"
-import { DailyDto } from "../types/DailyDto"
-import Daily from "./Daily"
-import { fetchDailies } from "@/content/main"
-import {
-  FunnelIcon,
-  GridFourIcon,
-  HandWavingIcon,
-  ListIcon,
-  LockSimpleIcon,
-  LockSimpleOpenIcon,
-  PlusIcon,
-  SirenIcon,
-} from "@phosphor-icons/react"
+import { fetchDailies } from "@/content/daily"
+import { FunnelIcon, PencilIcon, PlusIcon } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
+import { useEffect, useState } from "react"
 import {
-  addDailyModalIsOpenAtom,
-  dailiesAtom,
-  isDeleteModeAtom,
-  isListModeAtom,
+  allDailiesAtom,
+  editFormIsOpenAtom,
+  editSearchIsOpenAtom,
   showCompleteAtom as hideCompleteAtom,
+  isListViewAtom,
   sortModeAtom,
 } from "../lib/atoms"
+import { DailyDto } from "../lib/types/DailyDto"
 import {
-  getCurrentSortModeIcon,
+  DailySortMode,
+  getCurrentSortModeIcon as getSortIcon,
   nextSortMode,
   sortDailyByMethod,
-} from "../types/DailySortMode"
+} from "../lib/types/DailySortMode"
+import "./Dailies.scss"
+import Daily from "./Daily"
+import ViewModelIcon from "./icons/ViewModeIcon"
+import NoDailiesMessage from "./messages/NoDailiesMessage"
 
 export default function Dailies() {
-  const [dailies, setDailies] = useAtom(dailiesAtom)
-  const [filteredDailies, setFilteredDailies] = useState<DailyDto[]>([])
-  const [isOpen, setIsOpen] = useAtom(addDailyModalIsOpenAtom)
-  const [isListMode, setIsListMode] = useAtom(isListModeAtom)
+  const [allDailies, setAllDailies] = useAtom(allDailiesAtom)
+  const [dailies, setDailies] = useState<DailyDto[]>([])
+
+  const [isFormOpen, setIsFormOpen] = useAtom(editFormIsOpenAtom)
+  const [isEditOpen, setIsEditOpen] = useAtom(editSearchIsOpenAtom)
+
+  const [isListMode, setIsListMode] = useAtom(isListViewAtom)
   const [hideComplete, setHideComplete] = useAtom(hideCompleteAtom)
   const [sortMode, setSortMode] = useAtom(sortModeAtom)
-  const [isEditMode, setIsEditMode] = useAtom(isDeleteModeAtom)
 
   useEffect(() => {
-    fetchDailies(setDailies)
-  }, [isOpen])
+    fetchDailies(setAllDailies)
+    setSortMode(DailySortMode.Custom)
+  }, [isFormOpen, isEditOpen])
 
   useEffect(() => {
-    const filtered = [...dailies].filter(
+    const filtered = [...allDailies].filter(
       (daily) => !hideComplete || (hideComplete && !daily.wasOpenedToday)
     )
     const sorted = filtered.sort((a, b) => sortDailyByMethod(a, b, sortMode))
 
-    setFilteredDailies(sorted)
-  }, [dailies, hideComplete, sortMode])
+    setDailies(sorted)
+  }, [allDailies, hideComplete, sortMode])
 
-  useEffect(() => {
-    filteredDailies
-  }, [sortMode])
-
-  const listToggleIcon = isListMode ? (
-    <ListIcon size={32} weight={"bold"} />
-  ) : (
-    <GridFourIcon size={32} weight={"bold"} />
-  )
-  const editToggleIcon = isEditMode ? (
-    <LockSimpleOpenIcon size={32} weight={"bold"} />
-  ) : (
-    <LockSimpleIcon size={32} weight={"fill"} />
-  )
-
-  let noDailiesMessage = null
-
-  if (filteredDailies.length === 0 && hideComplete && dailies.length > 0)
-    noDailiesMessage = (
-      <p className="no-daily-message">
-        <span>
-          There are no dailies left for today.
-          <br />
-          <br />
-          <b>see you tomorrow!</b>
-        </span>
-
-        <HandWavingIcon size={64} weight={"regular"} />
-      </p>
-    )
-  else if (dailies.length === 0)
-    noDailiesMessage = (
-      <p className="no-daily-message">
-        <span>
-          You have <b>no dailies!</b>
-          <br />
-          <br />
-          <b>Reopen the popup</b> to load the defaults, or start adding your
-          own.
-        </span>
-
-        <SirenIcon size={64} weight={"bold"} />
-      </p>
-    )
+  const noDailiesMessage =
+    dailies.length === 0 ? (
+      <NoDailiesMessage
+        allCount={allDailies.length}
+        shownCount={dailies.length}
+      />
+    ) : null
 
   return (
     <>
@@ -105,18 +65,18 @@ export default function Dailies() {
           </button>
 
           <button onClick={() => setSortMode(nextSortMode(sortMode))}>
-            {getCurrentSortModeIcon(sortMode)}
+            {getSortIcon(sortMode)}
           </button>
 
           <button onClick={() => setIsListMode(!isListMode)}>
-            {listToggleIcon}
+            <ViewModelIcon isListView={isListMode} />
           </button>
 
-          <button onClick={() => setIsEditMode(!isEditMode)}>
-            {editToggleIcon}
+          <button onClick={() => setIsEditOpen(true)}>
+            <PencilIcon size={32} weight={"bold"} />
           </button>
 
-          <button onClick={() => setIsOpen(true)}>
+          <button onClick={() => setIsFormOpen(true)}>
             <PlusIcon size={32} weight={"bold"} />
           </button>
         </div>
@@ -124,7 +84,7 @@ export default function Dailies() {
 
       {noDailiesMessage ?? (
         <div className={isListMode ? "daily-list" : "daily-grid"}>
-          {filteredDailies?.map((dto: DailyDto) => (
+          {dailies?.map((dto) => (
             <Daily dto={dto} key={dto.id as string} />
           ))}
         </div>

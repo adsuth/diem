@@ -1,6 +1,6 @@
 import { ChangedObjectStateEnum } from "./decs"
 
-export const isChromium  = typeof (globalThis as any).browser !== "undefined";
+export const isChromium  = typeof (globalThis as any).browser === "undefined";
 export const browser = typeof (globalThis as any).browser !== "undefined" ? 
     (globalThis as any).browser : 
     chrome

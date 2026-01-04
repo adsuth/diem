@@ -1,10 +1,11 @@
-import { DailyColor } from "@/popup/types/DailyColor";
-import { DailyDto } from "@/popup/types/DailyDto";
-import { DailyIcon } from "@/popup/types/DailyIcon";
+import { DailyColor } from "@/popup/lib/types/DailyColor";
+import { DailyDto } from "@/popup/lib/types/DailyDto";
+import { DailyIcon } from "@/popup/lib/types/DailyIcon";
 import { v7 as uuidv7} from "uuid";
 
 export enum ChangedObjectStateEnum {
     DAILIES = 0,
+    SETTINGS,
 }
 
 export const TODAY = new Date()
@@ -21,6 +22,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 0,
     },
     {
         id: uuidv7(),
@@ -32,6 +34,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 1,
     },
     {
         id: uuidv7(),
@@ -43,6 +46,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 2,
     },
 
 
@@ -57,6 +61,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 3,
     },
     {
         id: uuidv7(),
@@ -68,6 +73,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 4,
     },
 
     // Game
@@ -81,6 +87,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 5,
     },
 
     // Music
@@ -94,6 +101,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 6,
     },
 
     // Misc
@@ -107,6 +115,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 7,
     },
     {
         id: uuidv7(),
@@ -118,6 +127,7 @@ export const DEFAULT_DAILIES: DailyDto[] = [
         openedUtc: null,
         modifiedUtc: new Date(),
         numberOfTimesOpened: 0,
+        customOrder: 8,
     },
 ]
 
@@ -131,4 +141,5 @@ export const DEFAULT_DAILY_DTO: DailyDto = {
     openedUtc: null,
     modifiedUtc: new Date(),
     numberOfTimesOpened: 0,
+    customOrder: -1,
 }

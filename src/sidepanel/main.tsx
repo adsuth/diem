@@ -1,10 +1,9 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import App from "../popup/App"
-import "./SidePanelOverrides.scss"
+import SidePanel from "./SidePanel"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <SidePanel />
   </StrictMode>
 )

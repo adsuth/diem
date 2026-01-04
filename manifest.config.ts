@@ -3,7 +3,8 @@ import pkg from "./package.json"
 
 export default defineManifest({
   manifest_version: 3,
-  name: pkg.name,
+  name: "Diem",
+  description: "List and keep track of your daily games like Wordle, Connections, etc.",
   version: pkg.version,
   icons: {
     256: "assets/diem_256.png",
@@ -21,7 +22,11 @@ export default defineManifest({
     "tabs",
   ],
   content_scripts: [{
-    js: ["src/content/main.ts"],
+    js: [
+        "src/content/main.ts", 
+        "src/content/daily.ts",
+        "src/content/settings.ts",
+    ],
     matches: [
         "<all_urls>"
     ],

@@ -29,7 +29,7 @@ function buildFirefoxManifest() {
     delete manifest.action;
 
     manifest.background = {}
-    manifest.background.scripts = [manifest.content_scripts[0].js[0]];
+    manifest.background.scripts = manifest.content_scripts[0].js;
     delete manifest.content_scripts[0].js;
 
     manifest.web_accessible_resources =
@@ -43,7 +43,7 @@ function buildFirefoxManifest() {
 
     manifest.browser_specific_settings = {
       gecko: {
-        id: "{ac34afe8-3a2e-4201-b745-346c0cf6ec7d}",
+        id: "{ba62c91b-e11e-494b-89cf-70354f23e7e6}",
       },
     };
 
