@@ -12,6 +12,7 @@ import {
 } from "../lib/atoms"
 import { DailyDto } from "../lib/types/DailyDto"
 import {
+  DailySortMode,
   getCurrentSortModeIcon as getSortIcon,
   nextSortMode,
   sortDailyByMethod,
@@ -34,6 +35,7 @@ export default function Dailies() {
 
   useEffect(() => {
     fetchDailies(setAllDailies)
+    setSortMode(DailySortMode.Custom)
   }, [isFormOpen, isEditOpen])
 
   useEffect(() => {

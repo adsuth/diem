@@ -5,6 +5,7 @@ import { v7 as uuidv7} from "uuid";
 
 export enum ChangedObjectStateEnum {
     DAILIES = 0,
+    SETTINGS,
 }
 
 export const TODAY = new Date()

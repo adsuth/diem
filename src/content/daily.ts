@@ -4,6 +4,8 @@ import {v7 as uuidv7} from "uuid"
 import { storage, pingChanges } from "./browser";
 import { TODAY, DEFAULT_DAILIES, ChangedObjectStateEnum, DEFAULT_DAILY_DTO } from "./decs";
 
+const DAILIES_STORAGE_KEY = "diem--dailies"
+
 function dailyDtoFactory(dto: DailyDto): DailyDto {
     dto.openedUtc = new Date(dto.openedUtc as string)
     dto.wasOpenedToday = TODAY.toDateString() === dto.openedUtc.toDateString()
@@ -25,12 +27,17 @@ export async function fetchDailies(
   setter?: (dtos: DailyDto[]) => void,
 ): Promise<DailyDto[]> {
     let storage = JSON.parse(
-        localStorage.getItem("adsu-diem") as string,
+        localStorage.getItem("adsu-diem--dailies") as string,
     );
 
+    if (!storage) {
+        console.log(`[debug] :: Initializing dailies storage`)
+        storage = []
+        localStorage.setItem("adsu-diem--dailies", JSON.stringify(storage));
+    }
+    
     storage = storage?.map(dailyDtoFactory)
-
-    localStorage.setItem("adsu-diem", JSON.stringify(storage));
+    localStorage.setItem("adsu-diem--dailies", JSON.stringify(storage));
 
     if (setter) {
         setter(storage);
@@ -38,7 +45,7 @@ export async function fetchDailies(
 
     console.log(`[debug] :: Returning ${storage.length} dailies`)
     console.log(`        :: Dailies include\n: ${storage.map((row: DailyDto) => row.name)}`)
-
+    
     return storage
 }
 
@@ -46,7 +53,7 @@ export function saveDailies(dtosToSave: DailyDto[], setter: (dtos: DailyDto[]) =
     const dtos = dtosToSave.map((row: DailyDto, i: number) => ({...row, customOrder: i}))
     
     storage.set({ dailies: dtos });
-    localStorage.setItem("adsu-diem", JSON.stringify(dtos));
+    localStorage.setItem("adsu-diem--dailies", JSON.stringify(dtos));
     console.log(`[debug] :: Saving ${dtos.length} dailies`)
     console.log(`        :: Dailies include\n: ${dtos.map((row: DailyDto) => row.name)}`)
     pingChanges(ChangedObjectStateEnum.DAILIES, dtos);
