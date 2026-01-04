@@ -9,7 +9,6 @@ import DailySearchEditModal from "./components/modals/DailySearchEditView"
 import {
   allDailiesAtom,
   currentTabUrlAtom,
-  editDailyIdAtom,
   editFormIsOpenAtom,
   editSearchIsOpenAtom,
   sortModeAtom,

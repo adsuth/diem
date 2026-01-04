@@ -9,5 +9,5 @@ export type DailySettings = {
 export const DEFAULT_SETTINGS: DailySettings = {
     sortMode: DailySortMode.Custom,
     isListView: false,
-    showComplete: false,
+    showComplete: true,
 }

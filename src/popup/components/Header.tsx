@@ -46,7 +46,7 @@ export default function Header(props: IHeaderProps) {
           onClick={() => setShowComplete(!showComplete)}
           hidden={!isHomeView}
         >
-          <FunnelIcon size={32} weight={showComplete ? "fill" : "bold"} />
+          <FunnelIcon size={32} weight={!showComplete ? "fill" : "bold"} />
         </button>
 
         <button

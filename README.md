@@ -38,13 +38,17 @@
 ## Screenshots
 
 <p align="center">
-    <img src="./assets/screenshots/popup_search_grid.png" height="400"/>
+    <img src="./assets/screenshots/home_grid.png" height="400"/>
 </p>
 
 <p align="center">
-    <img src="./assets/screenshots/popup_search_list.png" height="400"/>
+    <img src="./assets/screenshots/home_list.png" height="400"/>
 </p>
 
 <p align="center">
-    <img src="./assets/screenshots/popup_edit.png" height="400"/>
+    <img src="./assets/screenshots/edit_search.png" height="400"/>
+</p>
+
+<p align="center">
+    <img src="./assets/screenshots/edit_form.png" height="400"/>
 </p>
