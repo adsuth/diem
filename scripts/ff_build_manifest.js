@@ -27,13 +27,6 @@ function buildFirefoxManifest() {
     manifest.manifest_version = 2;
     manifest.browser_action = manifest.action;
     delete manifest.action;
-
-    manifest.background = {}
-    manifest.background.scripts = manifest.content_scripts[0].js;
-    delete manifest.content_scripts[0].js;
-
-    manifest.web_accessible_resources =
-      manifest.web_accessible_resources.resources;
     
     manifest.sidebar_action = {
         default_icon: "assets/diem_256.png",
@@ -42,9 +35,12 @@ function buildFirefoxManifest() {
     }
 
     manifest.browser_specific_settings = {
-      gecko: {
-        id: "{ba62c91b-e11e-494b-89cf-70354f23e7e6}",
-      },
+        gecko: {
+            id: "{ba62c91b-e11e-494b-89cf-70354f23e7e6}",
+            data_collection_permissions: {
+                required: ["none"],
+            }
+        },
     };
 
     fs.writeFileSync(
