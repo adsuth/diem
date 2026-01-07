@@ -1,8 +1,10 @@
 # Diem | Dailies Browser Extension
-[![Current Version](https://img.shields.io/amo/v/diem?label=version&style=for-the-badge)](https://github.com/adsuth/diem/releases)
+[![Chrome Version](https://img.shields.io/chrome-web-store/v/ljpkgpdpaicoedoepocclbjbhdpjbjpm?style=for-the-badge)](https://chromewebstore.google.com/detail/ljpkgpdpaicoedoepocclbjbhdpjbjpm)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/ljpkgpdpaicoedoepocclbjbhdpjbjpm?style=for-the-badge)](https://chromewebstore.google.com/detail/diem/ljpkgpdpaicoedoepocclbjbhdpjbjpm/reviews)
 
-[![Chrome Web Store users](https://img.shields.io/chrome-web-store/users/ljpkgpdpaicoedoepocclbjbhdpjbjpm?label=chrome&logo=googlechrome&logoColor=fff&style=for-the-badge)](https://chrome.google.com/webstore/detail/diem/ljpkgpdpaicoedoepocclbjbhdpjbjpm)
+[![AMO Version](https://img.shields.io/amo/v/<addon-slug>?style=for-the-badge)](https://addons.mozilla.org/addon/diem/)
+[![AMO Rating](https://img.shields.io/amo/stars/diem?style=for-the-badge)](https://addons.mozilla.org/addon/diem/)
+
 
 <p align="center">
     <img src="./assets/Diem.svg" height="128"/>
@@ -29,7 +31,7 @@
 - Automatically tick dailies off for the day when you visit to keep track.
 - Filter out your completed dailies
 - Sort your dailies by...
-  - Time added
+  - Custom Order *settable in the edit view*
   - Alphabetical order
   - Color
   - Icon
@@ -38,17 +40,17 @@
 ## Screenshots
 
 <p align="center">
-    <img src="./meta/screenshots/Screenshot_1.png" height="400"/>
+    <img src="./meta/screenshots/Screenshot_1.png" height="400" width="auto"/>
 </p>
 
 <p align="center">
-    <img src="./meta/screenshots/Screenshot_2.png" height="400"/>
+    <img src="./meta/screenshots/Screenshot_2.png" height="400" width="auto"/>
 </p>
 
 <p align="center">
-    <img src="./meta/screenshots/Screenshot_3.png" height="400"/>
+    <img src="./meta/screenshots/Screenshot_3.png" height="400" width="auto"/>
 </p>
 
 <p align="center">
-    <img src="./meta/screenshots/Screenshot_4.png" height="400"/>
+    <img src="./meta/screenshots/Screenshot_4.png" height="400" width="auto"/>
 </p>
