@@ -2,7 +2,7 @@
 [![Chrome Version](https://img.shields.io/chrome-web-store/v/ljpkgpdpaicoedoepocclbjbhdpjbjpm?style=for-the-badge)](https://chromewebstore.google.com/detail/ljpkgpdpaicoedoepocclbjbhdpjbjpm)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/ljpkgpdpaicoedoepocclbjbhdpjbjpm?style=for-the-badge)](https://chromewebstore.google.com/detail/diem/ljpkgpdpaicoedoepocclbjbhdpjbjpm/reviews)
 
-[![AMO Version](https://img.shields.io/amo/v/<addon-slug>?style=for-the-badge)](https://addons.mozilla.org/addon/diem/)
+[![AMO Version](https://img.shields.io/amo/v/diem?style=for-the-badge)](https://addons.mozilla.org/addon/diem/)
 [![AMO Rating](https://img.shields.io/amo/stars/diem?style=for-the-badge)](https://addons.mozilla.org/addon/diem/)
 
 
